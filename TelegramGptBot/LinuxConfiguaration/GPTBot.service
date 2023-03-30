@@ -2,8 +2,8 @@
 Description=Telegram ChatGpt Bot
 
 [Service]
-WorkingDirectory=~/bot/Publish/
-ExecStart=/usr/bin/dotnet ~/bot/Publish/TelegramGptBot.dll
+WorkingDirectory= %h/bot/Publish/
+ExecStart=/usr/bin/dotnet %h/bot/Publish/TelegramGptBot.dll
 Restart=always
 RestartSec=10
 SyslogIdentifier=TelegramGptBot
