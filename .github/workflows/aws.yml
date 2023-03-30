@@ -40,6 +40,6 @@ jobs:
         key: ${{ secrets.EC2_PRIVATE_KEY }}
         port: ${{ secrets.EC2_PORT }}
         script: |
-         cd ~/bot
+         cd ~/bot/Publish
          nohup dotnet TelegramGptBot.dll
  
