@@ -18,9 +18,7 @@ jobs:
         dotnet-version: '7.0.x'
         
     - name: Publish project
-      run: |
-       ls
-       dotnet publish --configuration Release --output ./Publish TelegramGptBot/TelegramGptBot.csproj
+      run: dotnet publish --configuration Release --output ./Publish TelegramGptBot/TelegramGptBot.csproj
 
       
     - name: copy file via ssh key
@@ -43,6 +41,12 @@ jobs:
          export GPTApiToken=${{ secrets.GPTAPITOKEN }}
          export TelegramBotToken=${{ secrets.TELEGRAMBOTTOKEN }}
          export TelegramChatID=${{ secrets.TELEGRAMCHATID }}
-         cd ~/bot/Publish
-         nohup dotnet TelegramGptBot.dll
+         cd ~/bot/Publish/LinuxConfiguaration
+         sudo systemctl stop GPTBot.service
+         sudo cp GPTBot.service /etc/systemd/system/
+         sudo systemctl daemon-reload
+         sudo systemctl start GPTBot.service
+
+
+
  

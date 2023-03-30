@@ -27,4 +27,10 @@
     <PackageReference Include="Telegram.Bot" Version="18.0.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="LinuxConfiguaration\GPTBot.service">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>

@@ -26,7 +26,7 @@ if (telegramBotConfig is null)
     return;
 }
 
-
+Console.WriteLine("Telegram Bot Started");
 
 //Start the bot 
 try

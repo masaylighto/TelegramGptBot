@@ -10,7 +10,7 @@ public class TelegramContext
     /// </summary>
     public required Func<string,Task<Result<string, Exception>>> MessageProccessor;
     private CancellationTokenSource EndMonitoringTokens = new CancellationTokenSource();
-
+    string proccessedMessages = string.Empty;
     public TelegramBotConfig TelegramBotConfig { get; }
 
     public TelegramContext(TelegramBotConfig telegramBotConfig)
@@ -39,7 +39,7 @@ public class TelegramContext
         {
             try
             {
-                var messagesUpdates = await Bot.GetUpdatesAsync();
+                var messagesUpdates = await Bot.GetUpdatesAsync(limit:1,offset:-1);
                 await ProccessMessages(messagesUpdates);
             }
             catch (Exception ex)
@@ -75,6 +75,11 @@ public class TelegramContext
             {
                 continue;
             }
+            if (proccessedMessages.Equals(message?.Message?.Text))
+            {
+                continue;
+            }
+            proccessedMessages = message?.Message?.Text!;
             await ProccessAMessage(message.Message!);
         }
     }
@@ -102,7 +107,7 @@ public class TelegramContext
     
     private bool IsMessageNotValid(Update message) {
 
-        return message is null||message.Message is null || message.Message.Text is null ||
+        return message is null||message.Message is null ||   string.IsNullOrEmpty(message.Message.Text)|| string.IsNullOrWhiteSpace(message.Message.Text) ||
             (message.Message.Chat.Id != TelegramBotConfig.TelegramChatID && TelegramBotConfig.TelegramChatID is not null); // if there a specific chat id sat then prevent the bot from processing request from other chat
     }
 }
