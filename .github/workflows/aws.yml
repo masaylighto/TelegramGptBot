@@ -40,6 +40,9 @@ jobs:
         key: ${{ secrets.EC2_PRIVATE_KEY }}
         port: ${{ secrets.EC2_PORT }}
         script: |
+         export GPTApiToken=${{ secrets.GPTAPITOKEN }}
+         export TelegramBotToken=${{ secrets.TELEGRAMBOTTOKEN }}
+         export TelegramChatID=${{ secrets.TELEGRAMCHATID }}
          cd ~/bot/Publish
          nohup dotnet TelegramGptBot.dll
  
