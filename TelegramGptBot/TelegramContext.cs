@@ -75,6 +75,11 @@ public class TelegramContext
             {
                 continue;
             }
+            if (TelegramBotConfig.LogRequestContent)
+            {  
+                //might be useful to debug the application
+                Console.WriteLine($"User : {message.Message.From} Send : {message.Message.Text}");
+            }
             if (proccessedMessages.Equals(message?.Message?.Text))
             {
                 continue;
