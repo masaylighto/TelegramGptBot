@@ -38,9 +38,10 @@ jobs:
         key: ${{ secrets.EC2_PRIVATE_KEY }}
         port: ${{ secrets.EC2_PORT }}
         script: |
-         export GPTApiToken=${{ secrets.GPTAPITOKEN }}
-         export TelegramBotToken=${{ secrets.TELEGRAMBOTTOKEN }}
-         export TelegramChatID=${{ secrets.TELEGRAMCHATID }}
+         >~/.bash_profile
+         echo export 'GPTApiToken=${{ secrets.GPTAPITOKEN }}' >>~/.bash_profile
+         echo export 'TelegramBotToken=${{ secrets.TELEGRAMBOTTOKEN }}' >> ~/.bash_profile
+         echo export 'TelegramChatID=${{ secrets.TELEGRAMCHATID }}'  >>~/.bash_profile
     - name: Add EC2 SSH private key
       run: |
         echo "${{ secrets.EC2_PRIVATE_KEY }}" > ec2_key.pem
@@ -49,7 +50,7 @@ jobs:
       run:   ssh -i "ec2_key.pem" -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null  -f ec2-user@ec2-3-29-91-204.me-central-1.compute.amazonaws.com " lsof -t /usr/bin/dotnet | xargs kill"
  
     - name: Run Bot
-      run:   ssh -i "ec2_key.pem" -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null  -f ec2-user@ec2-3-29-91-204.me-central-1.compute.amazonaws.com "nohup dotnet  ~/bot/Publish/TelegramGptBot.dll 2>&1 | logger -t GPTBot& || exit"
+      run:   ssh -i "ec2_key.pem" -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null  -f ec2-user@ec2-3-29-91-204.me-central-1.compute.amazonaws.com "dotnet  ~/bot/Publish/TelegramGptBot.dll GPTBot & exit"
    
     - name: Cleanup private key
       run: rm -f ec2_key.pem
