@@ -42,6 +42,7 @@ jobs:
          echo export 'GPTApiToken=${{ secrets.GPTAPITOKEN }}' >>~/.bash_profile
          echo export 'TelegramBotToken=${{ secrets.TELEGRAMBOTTOKEN }}' >> ~/.bash_profile
          echo export 'TelegramChatID=${{ secrets.TELEGRAMCHATID }}'  >>~/.bash_profile
+         source ~/.bash_profile    
     - name: Add EC2 SSH private key
       run: |
         echo "${{ secrets.EC2_PRIVATE_KEY }}" > ec2_key.pem
