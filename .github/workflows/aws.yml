@@ -30,7 +30,7 @@ jobs:
         key: ${{ secrets.EC2_PRIVATE_KEY }}
         source: ./Publish/
         target: ~/bot
-    - name: SSH into EC2 instance
+    - name: Set Env variable
       uses: appleboy/ssh-action@master
       with:
         host: ${{ secrets.EC2_HOST }}
@@ -41,8 +41,16 @@ jobs:
          export GPTApiToken=${{ secrets.GPTAPITOKEN }}
          export TelegramBotToken=${{ secrets.TELEGRAMBOTTOKEN }}
          export TelegramChatID=${{ secrets.TELEGRAMCHATID }}
-         cd ~/bot/Publish/
-         nohup dotnet  TelegramGptBot.dll 2>&1 | logger -t GPTBot & disown
+    - name: Add EC2 SSH private key
+      run: |
+        echo "${{ secrets.EC2_PRIVATE_KEY }}" > ec2_key.pem
+        chmod 600 ec2_key.pem
+    - name: Run Bot
+      run:   ssh -i "ec2_key.pem" -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null  -f ec2-user@ec2-3-29-91-204.me-central-1.compute.amazonaws.com "nohup dotnet  ~/bot/Publish/TelegramGptBot.dll 2>&1 | logger -t GPTBot& || exit"
+   
+    - name: Cleanup private key
+      run: rm -f ec2_key.pem
+
 
 
 
