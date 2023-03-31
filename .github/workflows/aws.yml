@@ -45,6 +45,9 @@ jobs:
       run: |
         echo "${{ secrets.EC2_PRIVATE_KEY }}" > ec2_key.pem
         chmod 600 ec2_key.pem
+    - name: Stop Older Bot Version
+      run:   ssh -i "ec2_key.pem" -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null  -f ec2-user@ec2-3-29-91-204.me-central-1.compute.amazonaws.com " lsof -t /usr/bin/dotnet | xargs kill"
+ 
     - name: Run Bot
       run:   ssh -i "ec2_key.pem" -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null  -f ec2-user@ec2-3-29-91-204.me-central-1.compute.amazonaws.com "nohup dotnet  ~/bot/Publish/TelegramGptBot.dll 2>&1 | logger -t GPTBot& || exit"
    
