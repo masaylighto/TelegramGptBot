@@ -42,7 +42,7 @@ jobs:
          export TelegramBotToken=${{ secrets.TELEGRAMBOTTOKEN }}
          export TelegramChatID=${{ secrets.TELEGRAMCHATID }}
          cd ~/bot/Publish/
-         nohup dotnet  TelegramGptBot.dll 2>&1 | logger -t GPTBot & 
+         nohup dotnet  TelegramGptBot.dll 2>&1 | logger -t GPTBot & disown
 
 
 
