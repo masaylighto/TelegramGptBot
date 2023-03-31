@@ -74,17 +74,17 @@ public class TelegramContext
             if (IsMessageNotValid(message))
             {
                 continue;
-            }
-            if (TelegramBotConfig.LogRequestContent)
-            {  
-                //might be useful to debug the application
-                Console.WriteLine($"User : {message.Message.From} Send : {message.Message.Text}");
-            }
+            }           
             if (proccessedMessages.Equals(message?.Message?.Text))
             {
                 continue;
             }
             proccessedMessages = message?.Message?.Text!;
+            if (TelegramBotConfig.LogRequestContent)
+            {  
+                //might be useful to debug the application
+                Console.WriteLine($"User : {message.Message.From} Send : {message.Message.Text}");
+            }
             await ProccessAMessage(message.Message!);
         }
     }
